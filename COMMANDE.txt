@@ -1,0 +1,20 @@
+Commande de lancement 
+
+java -cp out Main train/train/cats/cats.wav train/train/dogs/dogs.wav test/test/cats/fichierchoisie.wav R ou H ou S 
+
+
+
+
+train/train/cats/cats.wav : sons de chats pour l’entraînement
+
+train/train/dogs/dogs.wav : sons de chiens pour l’entraînement
+
+test/test/cats/fichierchoisie.wav : son inconnu à analyser
+
+[R|H|S] : type de neurone (ReLU, Heavyside, Sigmoïde)
+
+
+
+EXEMPLE: 
+
+java -cp out Main train/cats/cats.wav train/dogs/dogs.wav test/cat_137.wav R
