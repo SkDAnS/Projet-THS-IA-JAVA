@@ -76,4 +76,8 @@ public class testNeurone
 		}
 		return bruitée;
 	}
+
+
+
+
 }
