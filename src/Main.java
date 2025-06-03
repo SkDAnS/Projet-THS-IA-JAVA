@@ -63,11 +63,16 @@ public class Main {
         File fichier = new File(fichierNeurone);
         if (fichier.exists() && fichier.isFile()) {
             System.out.println("Fichier de neurone trouvé : " + fichierNeurone);
-            System.out.println("ATTENTION : Impossible de charger automatiquement le neurone.");
-            System.out.println("Veuillez implémenter une méthode de chargement dans " + typeNeurone);
-            System.out.println("ou supprimer le fichier pour ré-entraîner : " + fichierNeurone);
-            System.out.println("\nPour l'instant, ré-entraînement du neurone...");
-            entrainerNeurone(neurone, typeActivation, fichierMiaulement, fichierAboiement, fichierNeurone);
+            System.out.println("Tentative de chargement du neurone existant...");
+
+            boolean chargementReussi = chargerNeurone(neurone, typeActivation, fichierNeurone);
+
+            if (chargementReussi) {
+                System.out.println("Neurone chargé avec succès depuis : " + fichierNeurone);
+            } else {
+                System.out.println("Échec du chargement. Création et entraînement d'un nouveau neurone...");
+                entrainerNeurone(neurone, typeActivation, fichierMiaulement, fichierAboiement, fichierNeurone);
+            }
         } else {
             System.out.println("Fichier de neurone non trouvé : " + fichierNeurone);
             System.out.println("Création et entraînement d'un nouveau neurone " + typeNeurone + "...");
@@ -92,6 +97,27 @@ public class Main {
         } catch (Exception e) {
             System.err.println("Erreur lors de la création du neurone : " + e.getMessage());
             return null;
+        }
+    }
+
+    private static boolean chargerNeurone(Object neurone, String typeActivation, String fichierNeurone) {
+        try {
+            switch (typeActivation) {
+                case "R":
+                    ((NeuroneReLU) neurone).chargement(fichierNeurone);
+                    return true;
+                case "H":
+                    ((NeuroneHeavyside) neurone).chargement(fichierNeurone);
+                    return true;
+                case "S":
+                    ((NeuroneSigmoide) neurone).chargement(fichierNeurone);
+                    return true;
+                default:
+                    return false;
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur lors du chargement : " + e.getMessage());
+            return false;
         }
     }
 

@@ -1,4 +1,7 @@
 package neurone;
+
+import java.io.IOException;
+
 public interface iNeurone
 {
 	// Calcule la valeur de sortie en fonction des entrées, des poids synaptiques,
@@ -11,6 +14,6 @@ public interface iNeurone
 	// Fonction d'apprentissage relative à la mse
 	public void apprentissage(final float[][] entrees, final float[] resultats, final float MSElimite);
 
-	public void sauvegarde(String chemin); // optionel
-	public void chargement(String chemin); // optionel
+	public void sauvegarde(String chemin) throws IOException; // optionel
+	public void chargement(String chemin) throws IOException; // optionel
 }
