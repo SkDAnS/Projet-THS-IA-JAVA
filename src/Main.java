@@ -144,6 +144,7 @@ public class Main {
         System.out.println("Entraînement du neurone en cours...");
 
         try {
+
             switch (typeActivation) {
                 case "R":
                     ((NeuroneReLU) neurone).apprentissage(entrees, sorties, 0.001f);
@@ -187,6 +188,7 @@ public class Main {
         int nbChats = 0;
         int nbChiens = 0;
 
+
         System.out.println("Nombre de blocs à analyser : " + nbBlocs);
         System.out.println("\nRésultats de détection :");
         System.out.println("========================");
@@ -217,13 +219,38 @@ public class Main {
                 continue;
             }
 
-            String resultat = sortie > 0.5 ? "Chat" : "Chien";
 
-            if (sortie > 0.5) nbChats++;
-            else nbChiens++;
+            float confiance;
+            String resultat;
+            if (typeActivation.equals("R")) {
+                // convertir sortie ReLU en probabilité : on clamp entre 0 et une valeur max, puis on normalise à [0,1]
+                float maxSortie = 5.0f; // ajuster cette valeur selon expérience
+                float sortieNorm = sortie > maxSortie ? 1.0f : sortie / maxSortie;
+                if (sortieNorm > 0.5f) {
+                    confiance = sortieNorm * 100;
+                    resultat = "Chat";
+                    nbChats++;
+                } else {
+                    confiance = (1 - sortieNorm) * 100;
+                    resultat = "Chien";
+                    nbChiens++;
+                }
+            } else {
+                // pour Heavyside et Sigmoide, sortie déjà entre 0 et 1
+                if (sortie > 0.5f) {
+                    confiance = sortie * 100;
+                    resultat = "Chat";
+                    nbChats++;
+                } else {
+                    confiance = (1 - sortie) * 100;
+                    resultat = "Chien";
+                    nbChiens++;
+                }
+            }
 
-            System.out.printf("Bloc %4d : %s (confiance: %.3f)\n", i, resultat,
-                    sortie > 0.5 ? sortie : 1.0f - sortie);
+
+            System.out.printf("Bloc %4d : %s (Sortie: %.3f, Confiance: %.1f%%)\n", i, resultat, sortie, confiance);
+
         }
 
         System.out.println("\n========================");
