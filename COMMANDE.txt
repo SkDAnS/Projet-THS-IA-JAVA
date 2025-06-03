@@ -1,3 +1,13 @@
+Compiler:
+mkdir -p out && javac -d out src/*.java
+javac -d out -cp "lib/*" src/*.java
+
+
+ou
+
+javac -d out *.java    
+
+
 Commande de lancement 
 
 java -cp out Main train/train/cats/cats.wav train/train/dogs/dogs.wav test/test/cats/fichierchoisie.wav R ou H ou S 
