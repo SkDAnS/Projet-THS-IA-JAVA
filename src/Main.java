@@ -147,7 +147,7 @@ public class Main {
 
             switch (typeActivation) {
                 case "R":
-                    ((NeuroneReLU) neurone).apprentissage(entrees, sorties, 0.001f);
+                    ((NeuroneReLU) neurone).apprentissage(entrees, sorties, 0.01f);
                     break;
                 case "H":
                     ((NeuroneHeavyside) neurone).apprentissage(entrees, sorties, 0.01f);
@@ -222,21 +222,20 @@ public class Main {
 
             float confiance;
             String resultat;
+
             if (typeActivation.equals("R")) {
-                // convertir sortie ReLU en probabilité : on clamp entre 0 et une valeur max, puis on normalise à [0,1]
-                float maxSortie = 5.0f; // ajuster cette valeur selon expérience
-                float sortieNorm = sortie > maxSortie ? 1.0f : sortie / maxSortie;
-                if (sortieNorm > 0.5f) {
-                    confiance = sortieNorm * 100;
+                // Pour ReLU : classification binaire simple sans affichage de confiance en pourcentage
+                if (sortie > 0.5f) {
                     resultat = "Chat";
                     nbChats++;
                 } else {
-                    confiance = (1 - sortieNorm) * 100;
                     resultat = "Chien";
                     nbChiens++;
                 }
+                // Pas d'affichage de confiance pour ReLU
+                System.out.printf("Bloc %4d : %s (Sortie: %.3f)\n", i, resultat, sortie);
             } else {
-                // pour Heavyside et Sigmoide, sortie déjà entre 0 et 1
+                // pour Heavyside et Sigmoide, sortie déjà entre 0 et 1, on affiche la confiance en %
                 if (sortie > 0.5f) {
                     confiance = sortie * 100;
                     resultat = "Chat";
@@ -246,10 +245,9 @@ public class Main {
                     resultat = "Chien";
                     nbChiens++;
                 }
+                System.out.printf("Bloc %4d : %s (Sortie: %.3f, Confiance: %.1f%%)\n", i, resultat, sortie, confiance);
             }
 
-
-            System.out.printf("Bloc %4d : %s (Sortie: %.3f, Confiance: %.1f%%)\n", i, resultat, sortie, confiance);
 
         }
 
