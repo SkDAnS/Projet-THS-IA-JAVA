@@ -13,6 +13,8 @@ java -cp Main train/train/cats/cats.wav train/train/dogs/dogs.wav test/test/cats
 
 --------------------------------------------------------------------------------------------------------------------------
 
+(Veuillez respecter l'arborescence des fichiers entrainement et test) 
+
 
 train/train/cats/cats.wav : sons de chats pour l’entraînement
 
